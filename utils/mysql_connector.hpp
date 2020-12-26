@@ -60,7 +60,9 @@ void mysql_connector::connectionInfo() {
 
 void mysql_connector::disconnect() {
     try {
-        connection.disconnect();
+        if (connection.connected()) {
+            connection.disconnect();
+        }
     }
     catch (const Exception &er) {
         cerr << "#disconnect# Error: " << er.what() << endl;
