@@ -19,7 +19,8 @@ public:
         : host(std::move(host)), port(port), account(std::move(account)), password(std::move(password)), database(std::move(database)) {}
 
     bool connect();
-    bool disconnect();
+    void connectionInfo();
+    void disconnect();
     vector<Row> query(string sql);
 
 private:
@@ -46,15 +47,24 @@ bool mysql_connector::connect() {
     return false;
 }
 
-bool mysql_connector::disconnect() {
+void mysql_connector::connectionInfo() {
+    if (connection.connected()) {
+        cout << "connect to mysql: " << host << ":" << port << ", db: " << database << endl;
+        cout << "mysql version: " << connection.server_version() << endl;
+        cout << "mysql running status: " << connection.server_status() << endl;
+    }
+    else {
+        cerr << "Are you already start MYSQL server or you ar offline ?" << endl;
+    }
+}
+
+void mysql_connector::disconnect() {
     try {
         connection.disconnect();
     }
     catch (const Exception &er) {
         cerr << "#disconnect# Error: " << er.what() << endl;
-        return false;
     }
-    return false;
 }
 
 vector<Row> mysql_connector::query(string sql) {
@@ -83,25 +93,21 @@ vector<Row> mysql_connector::query(string sql) {
 }
 
 TEST(mysql_connector, mysql_connector_test) { /* NOLINT */
-    mysql_connector mysqlConnector("127.0.0.1", 3308, "root", "ljk121121");
+    char *account, *pwd;
+    account = getenv("MYSQL_ACCOUNT");
+    pwd = getenv("MYSQL_PASSWORD");
+    mysql_connector mysqlConnector("127.0.0.1", 3308, account, pwd);
 
-    mysqlConnector.connect();
-
-    try {
-        vector<Row> useQueryResult = mysqlConnector.query("select * from car_oil");
-        int size = useQueryResult.size();
-        for (int i = 0; i < size; i++) {
-            cout << "i = " << i << ", " << useQueryResult.at(i)["oil_summary"] << endl;
-        }
+    if (mysqlConnector.connect()) {
+        cout << "connect to mysql success." << endl;
+        mysqlConnector.connectionInfo();
+        mysqlConnector.disconnect();
+        SUCCEED();
     }
-    catch (const BadConversion &er){
-        cout << "Conversion error: " << er.what() << endl <<
-             "\tretrieved data size: " << er.retrieved <<
-             ", actual size: " << er.actual_size << endl;
+    else {
+        cerr << "connect to mysql failed." << endl;
+        FAIL();
     }
-
-    mysqlConnector.disconnect();
-    SUCCEED();
 }
 
 #endif //JARVIS_MYSQL_CONNECTOR_HPP
