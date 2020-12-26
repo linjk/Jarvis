@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include "utils/mysql_connector.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
