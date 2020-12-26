@@ -2,14 +2,9 @@
 // Created by linjk on 2020/9/27.
 //
 
-#include <iostream>
+#include "commons/jarvis.h"
 #include "utils/mysql_connector.hpp"
 #include "utils/car_oil_util.hpp"
-#include <gtest/gtest.h>
-
-using namespace std;
-
-void printUsage();
 
 int main(int argc, char* argv[]) {
     if (2 == argc) {

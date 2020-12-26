@@ -19,4 +19,6 @@ using namespace std;
 using namespace boost;
 using namespace boost::gregorian;
 
+void printUsage();
+
 #endif //JARVIS_JARVIS_H
