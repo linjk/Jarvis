@@ -11,6 +11,8 @@ class car_oil {
 public:
     car_oil(): oilDate(date(day_clock::local_day())) {}
 
+    car_oil& operator += (const car_oil& co);
+
     void setOilSummary(double summary);
     double getOilSummary();
 
@@ -30,7 +32,18 @@ private:
     days days;
     // 是否加满
     bool is_full{};
+
+    inline car_oil& __doapl(car_oil* ths, const car_oil& co) {
+        ths->oilSummary += co.oilSummary;
+        ths->oilCnt += co.oilCnt;
+
+        return *ths;
+    }
 };
+
+inline car_oil& car_oil::operator += (const car_oil& co) {
+    return __doapl(this, co);
+}
 
 void car_oil::setOilSummary(double summary) {
     this->oilSummary = summary;
