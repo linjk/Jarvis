@@ -37,7 +37,7 @@ link_libraries(
 
 add_executable(
         Jarvis main.cpp
-        utils/MySQLUtil.hpp
-        entity/CarOilRecord.hpp)
+        utils/mysql_connector.hpp
+        entity/car_oil_record.hpp)
 
 target_link_libraries(Jarvis mysqlclient mysqlpp)
