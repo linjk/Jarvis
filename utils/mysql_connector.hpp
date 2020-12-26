@@ -21,7 +21,7 @@ public:
     bool connect();
     void connectionInfo();
     void disconnect();
-    vector<Row> query(string sql);
+    vector<Row> query(const string& sql);
 
 private:
     Connection connection;
@@ -67,7 +67,7 @@ void mysql_connector::disconnect() {
     }
 }
 
-vector<Row> mysql_connector::query(string sql) {
+vector<Row> mysql_connector::query(const string& sql) {
     if (connection.connected()) {
         try {
             vector<Row> v;
@@ -76,8 +76,7 @@ vector<Row> mysql_connector::query(string sql) {
             if (storeQueryResult) {
                 StoreQueryResult::const_iterator it;
                 for (it = storeQueryResult.begin(); it != storeQueryResult.end(); ++it) {
-                    Row rowTmp = *it;
-                    v.push_back(rowTmp);
+                    v.push_back(*it);
                 }
             }
             if (connection.errnum()) {
@@ -86,7 +85,7 @@ vector<Row> mysql_connector::query(string sql) {
             return v;
         }
         catch (BadQuery &er){
-            cout << "Error:" << er.what() << endl;
+            cout << "#query# Error:" << er.what() << endl;
         }
     }
     return vector<Row>();
@@ -101,6 +100,10 @@ TEST(mysql_connector, mysql_connector_test) { /* NOLINT */
     if (mysqlConnector.connect()) {
         cout << "connect to mysql success." << endl;
         mysqlConnector.connectionInfo();
+        vector<Row> rows = mysqlConnector.query("select now() as now;");
+        for (int i = 0; i < rows.size(); i++) {
+            cout << "------> " << rows.at(i)["now"] << endl;
+        }
         mysqlConnector.disconnect();
         SUCCEED();
     }
