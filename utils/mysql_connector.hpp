@@ -20,7 +20,7 @@ public:
 
     bool connect();
     bool disconnect();
-    Row query(string sql);
+    vector<Row> query(string sql);
 
 private:
     Connection connection;
@@ -57,23 +57,29 @@ bool mysql_connector::disconnect() {
     return false;
 }
 
-Row mysql_connector::query(string sql) {
+vector<Row> mysql_connector::query(string sql) {
     if (connection.connected()) {
         try {
+            vector<Row> v;
             Query query = connection.query(sql);
-            UseQueryResult res = query.use();
-            Row row = res.fetch_row();
+            StoreQueryResult storeQueryResult = query.store();
+            if (storeQueryResult) {
+                StoreQueryResult::const_iterator it;
+                for (it = storeQueryResult.begin(); it != storeQueryResult.end(); ++it) {
+                    Row rowTmp = *it;
+                    v.push_back(rowTmp);
+                }
+            }
             if (connection.errnum()) {
                 cerr << "Error in fetch_row";
             }
-            row.value_list()
-            return res.;
+            return v;
         }
         catch (BadQuery &er){
             cout << "Error:" << er.what() << endl;
         }
     }
-    return Row();
+    return vector<Row>();
 }
 
 TEST(mysql_connector, mysql_connector_test) { /* NOLINT */
@@ -82,9 +88,10 @@ TEST(mysql_connector, mysql_connector_test) { /* NOLINT */
     mysqlConnector.connect();
 
     try {
-        Row useQueryResult = mysqlConnector.query("select * from car_oil");
-        while (Row row = useQueryResult.fetch_row()) {
-            cout << row["oil_summary"] << endl;
+        vector<Row> useQueryResult = mysqlConnector.query("select * from car_oil");
+        int size = useQueryResult.size();
+        for (int i = 0; i < size; i++) {
+            cout << "i = " << i << ", " << useQueryResult.at(i)["oil_summary"] << endl;
         }
     }
     catch (const BadConversion &er){
