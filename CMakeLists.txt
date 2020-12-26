@@ -33,12 +33,13 @@ link_directories(
 link_libraries(
         "mysqlclient"
         "gtest"
-        "boost_date_time")
+        "boost_date_time"
+        "boost_system")
 
 add_executable(
         Jarvis main.cpp
         utils/mysql_connector.hpp
         utils/car_oil_util.hpp
-        entity/car_oil.h)
+        entity/car_oil.h commons/jarvis.h)
 
 target_link_libraries(Jarvis mysqlclient mysqlpp)

@@ -5,12 +5,9 @@
 #ifndef JARVIS_MYSQL_CONNECTOR_HPP
 #define JARVIS_MYSQL_CONNECTOR_HPP
 
-#include <iostream>
-#include <utility>
+#include "../commons/jarvis.h"
 #include <mysql++/mysql++.h>
-#include <gtest/gtest.h>
 
-using namespace std;
 using namespace mysqlpp;
 
 class mysql_connector {

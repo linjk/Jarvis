@@ -5,10 +5,7 @@
 #ifndef JARVIS_CAR_OIL_H
 #define JARVIS_CAR_OIL_H
 
-#include <boost/date_time/gregorian/gregorian.hpp>
-
-using namespace boost;
-using namespace boost::gregorian;
+#include "../commons/jarvis.h"
 
 class car_oil {
 public:

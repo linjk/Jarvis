@@ -4,17 +4,9 @@
 #ifndef JARVIS_CAR_OIL_UTIL_HPP
 #define JARVIS_CAR_OIL_UTIL_HPP
 
-#include <iostream>
-#include <vector>
-#include "mysql_connector.hpp"
+#include "../commons/jarvis.h"
 #include "../entity/car_oil.h"
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/smart_ptr.hpp>
-#include <gtest/gtest.h>
-
-using namespace std;
-using namespace boost;
-using namespace boost::gregorian;
+#include "mysql_connector.hpp"
 
 class car_oil_util {
 public:
@@ -71,6 +63,5 @@ TEST(CarOilRecord, CarOilRecordInit) { /* NOLINT */
 
     SUCCEED();
 }
-
 
 #endif //JARVIS_CAR_OIL_UTIL_HPP
