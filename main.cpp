@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "utils/mysql_connector.hpp"
+#include "utils/car_oil_util.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
